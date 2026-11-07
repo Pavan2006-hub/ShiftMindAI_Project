@@ -1,4 +1,3 @@
-
 const loginForm = document.getElementById("loginForm");
 const loginError = document.getElementById("loginError");
 const loginButton = document.getElementById("loginButton");
@@ -8,7 +7,7 @@ loginForm.addEventListener("submit", async function (event) {
 
     loginError.hidden = true;
     loginButton.disabled = true;
-    loginButton.textContent = "Signing in...";
+    loginButton.textContent = "Verifying credentials...";
 
     try {
         const csrfResponse = await fetch("/api/auth/csrf", {
@@ -16,7 +15,7 @@ loginForm.addEventListener("submit", async function (event) {
         });
 
         if (!csrfResponse.ok) {
-            throw new Error("Unable to obtain security token.");
+            throw new Error("Unable to obtain security token. Refresh the page.");
         }
 
         const csrfData = await csrfResponse.json();
@@ -40,7 +39,12 @@ loginForm.addEventListener("submit", async function (event) {
             throw new Error(result.message || "Login failed.");
         }
 
-        window.location.href = "/dashboard";
+        if (result.otp_required) {
+            window.location.href = result.redirect || "/verify-otp";
+            return;
+        }
+
+        throw new Error("Unexpected login response.");
 
     } catch (error) {
         loginError.textContent = error.message;

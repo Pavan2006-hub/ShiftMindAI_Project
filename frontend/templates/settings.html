@@ -1,22 +1,114 @@
+
 {% extends "base.html" %}
+
 {% block title %}Settings | ShiftMind AI{% endblock %}
 {% block page_heading %}Settings{% endblock %}
 {% block page_subtitle %}Integrations, account and team{% endblock %}
+
 {% block content %}
-<div class="panel" style="margin-bottom:20px"><div class="panel-header"><h3>Integration status</h3></div><div id="integrations" class="muted">Checking...</div>
-  <p class="muted" style="margin-top:10px">Keys are set in the <code>.env</code> file on the server and are never shown here.</p></div>
-<div class="panel" style="margin-bottom:20px;max-width:560px"><div class="panel-header"><h3>Change password</h3></div>
-  <div class="form-group"><label>Current password</label><input type="password" id="curPass"></div>
-  <div class="form-group"><label>New password (8-72 characters)</label><input type="password" id="newPass"></div>
-  <div id="pwMessage" class="alert" hidden></div><button class="primary-button small-button" id="pwBtn">Update password</button></div>
+
+<!-- INTEGRATION STATUS -->
+<div class="panel" style="margin-bottom:20px">
+    <div class="panel-header">
+        <h3>Integration status</h3>
+    </div>
+
+    <div id="integrations" class="muted">
+        Checking...
+    </div>
+
+    <p class="muted" style="margin-top:10px">
+        Keys are set in the <code>.env</code> file on the server and are never shown here.
+    </p>
+</div>
+
+
+<!-- CHANGE PASSWORD -->
+<div class="panel" style="margin-bottom:20px;max-width:560px">
+    <div class="panel-header">
+        <h3>Change password</h3>
+    </div>
+
+    <div class="form-group">
+        <label for="curPass">Current password</label>
+        <input type="password" id="curPass" autocomplete="current-password">
+    </div>
+
+    <div class="form-group">
+        <label for="newPass">New password (8-72 characters)</label>
+        <input type="password" id="newPass" autocomplete="new-password">
+    </div>
+
+    <div id="pwMessage" class="alert" hidden></div>
+
+    <button class="primary-button small-button" id="pwBtn" type="button">
+        Update password
+    </button>
+</div>
+
+
 {% if current_user.role == 'admin' %}
-<div class="panel" style="max-width:560px"><div class="panel-header"><h3>Add engineer (admin)</h3></div>
-  <div class="form-group"><label>Name</label><input id="engName"></div>
-  <div class="form-group"><label>Email</label><input type="email" id="engEmail"></div>
-  <div class="form-group"><label>Temporary password</label><input type="password" id="engPass"></div>
-  <div id="engMessage" class="alert" hidden></div><button class="primary-button small-button" id="engBtn">Create engineer</button></div>
+
+<!-- ADD ENGINEER -->
+<div class="panel" style="margin-bottom:20px;max-width:560px">
+    <div class="panel-header">
+        <h3>Add engineer (admin)</h3>
+    </div>
+
+    <div class="form-group">
+        <label for="engName">Name</label>
+        <input type="text" id="engName" maxlength="120">
+    </div>
+
+    <div class="form-group">
+        <label for="engEmail">Email</label>
+        <input type="email" id="engEmail" maxlength="150">
+    </div>
+
+    <div class="form-group">
+        <label for="engPass">Temporary password</label>
+        <input type="password" id="engPass" autocomplete="new-password">
+    </div>
+
+    <div id="engMessage" class="alert" hidden></div>
+
+    <button class="primary-button small-button" id="engBtn" type="button">
+        Create engineer
+    </button>
+</div>
+
+
+<!-- ENGINEER MANAGEMENT -->
+<div class="panel">
+    <div class="panel-header">
+        <h3>Engineer Management</h3>
+    </div>
+
+    <p class="muted">
+        View, search, edit, activate, deactivate and delete engineer accounts.
+    </p>
+
+    <div class="toolbar" style="margin:15px 0">
+        <input
+            type="search"
+            id="engineerSearch"
+            placeholder="Search engineers by name or email..."
+            aria-label="Search engineers"
+        >
+    </div>
+
+    <div id="engineerMessage" class="alert" hidden></div>
+
+    <div id="engineerList">
+        Loading engineers...
+    </div>
+</div>
+
 {% endif %}
+
 {% endblock %}
+
+
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
 {% endblock %}

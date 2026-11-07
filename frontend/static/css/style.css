@@ -1,17 +1,25 @@
+
 :root {
-    --background: #0b1120;
-    --sidebar: #101a2c;
+    /* Premium Enterprise Cyber Intelligence Theme */
+    --background: #080d1a;
+    --sidebar: #0c1425;
     --surface: #111c30;
-    --surface-light: #18263d;
-    --border: #24344d;
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
-    --cyan: #06b6d4;
-    --text: #e5edf8;
-    --muted: #91a2bb;
-    --green: #22c55e;
-    --red: #ef4444;
-    --orange: #f59e0b;
+    --surface-light: #192943;
+    --border: #263954;
+
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --cyan: #22d3ee;
+
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+
+    --green: #34d399;
+    --red: #fb7185;
+    --orange: #fbbf24;
+
+    --shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+    --radius: 14px;
 }
 
 * {
@@ -20,11 +28,18 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    background: var(--background);
+    background:
+        radial-gradient(ellipse at 75% 0%, rgba(79, 70, 229, 0.09), transparent 35%),
+        var(--background);
     color: var(--text);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
+    line-height: 1.5;
 }
 
 a {
@@ -36,6 +51,10 @@ button, input, textarea, select {
     font: inherit;
 }
 
+button {
+    transition: all 0.2s ease;
+}
+
 .app-layout {
     display: flex;
     min-height: 100vh;
@@ -45,38 +64,40 @@ button, input, textarea, select {
 
 .sidebar {
     width: 255px;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
+    background: linear-gradient(180deg, #0e192d 0%, #0a1221 100%);
+    border-right: 1px solid rgba(100, 116, 139, 0.18);
     display: flex;
     flex-direction: column;
-    padding: 20px 16px;
+    padding: 22px 16px;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     height: 100vh;
-    overflow: auto;          /* only .sidebar-nav scrolls */
+    overflow: auto;
     z-index: 100;
+    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.12);
 }
 
 .brand {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 0 8px 20px;
+    padding: 0 8px 24px;
     flex-shrink: 0;
 }
 
 .brand-icon {
-    width: 42px;
-    height: 42px;
-    background: linear-gradient(135deg, #2563eb, #06b6d4);
-    border-radius: 12px;
+    width: 43px;
+    height: 43px;
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
+    border-radius: 13px;
     display: grid;
     place-items: center;
     font-weight: 800;
     font-size: 22px;
     color: white;
+    box-shadow: 0 5px 20px rgba(99, 102, 241, 0.3);
 }
 
 .brand-icon.large {
@@ -89,6 +110,7 @@ button, input, textarea, select {
 .brand-text h2 {
     font-size: 18px;
     font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
 .brand-text h2 span,
@@ -99,12 +121,14 @@ button, input, textarea, select {
 .brand-text small {
     font-size: 10px;
     color: var(--muted);
+    letter-spacing: 1px;
 }
 
-/* Scrollable middle area (wrap the nav sections in <nav class="sidebar-nav">) */
+/* Scrollable navigation */
+
 .sidebar-nav {
     flex: 1;
-    min-height: 0;             /* required so the flex child can shrink and scroll */
+    min-height: 0;
     overflow-y: auto;
     padding-right: 4px;
 }
@@ -114,19 +138,19 @@ button, input, textarea, select {
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 4px;
+    background: #344765;
+    border-radius: 10px;
 }
 
 .sidebar-section {
-    margin-bottom: 18px;
+    margin-bottom: 22px;
 }
 
 .nav-heading {
-    color: #657891;
+    color: #7185a3;
     font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
     padding: 0 12px 12px;
 }
 
@@ -134,12 +158,14 @@ button, input, textarea, select {
     display: flex;
     align-items: center;
     gap: 13px;
-    padding: 10px 12px;
+    padding: 11px 12px;
     margin-bottom: 5px;
-    border-radius: 8px;
-    color: var(--muted);
+    border-radius: 9px;
+    color: #a2b1c8;
     font-size: 13px;
-    transition: 0.2s;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.22s ease;
 }
 
 .nav-link span {
@@ -148,17 +174,26 @@ button, input, textarea, select {
     text-align: center;
 }
 
-.nav-link:hover,
-.nav-link.active {
-    background: #1d3150;
-    color: #60a5fa;
+.nav-link:hover {
+    background: rgba(99, 102, 241, 0.10);
+    color: #c7d2fe;
+    border-color: rgba(99, 102, 241, 0.15);
+    transform: translateX(2px);
 }
 
-/* Status box + logout, always visible at the bottom */
+.nav-link.active {
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.22), rgba(6, 182, 212, 0.07));
+    color: #a5b4fc;
+    border-color: rgba(99, 102, 241, 0.25);
+    box-shadow: inset 3px 0 0 #818cf8;
+}
+
+/* Sidebar bottom */
+
 .sidebar-bottom {
     flex-shrink: 0;
     margin-top: auto;
-    padding-top: 12px;
+    padding-top: 14px;
     border-top: 1px solid var(--border);
 }
 
@@ -166,10 +201,11 @@ button, input, textarea, select {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 14px 10px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    padding: 14px 12px;
+    border: 1px solid rgba(52, 211, 153, 0.17);
+    border-radius: 11px;
     margin-bottom: 15px;
+    background: rgba(52, 211, 153, 0.045);
 }
 
 .system-status strong,
@@ -190,20 +226,24 @@ button, input, textarea, select {
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.65);
 }
 
 .logout-button {
     width: 100%;
-    background: transparent;
-    color: #f87171;
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    background: rgba(251, 113, 133, 0.04);
+    color: #fda4af;
+    border: 1px solid rgba(251, 113, 133, 0.18);
+    border-radius: 9px;
     padding: 11px;
     cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .logout-button:hover {
-    background: #3b202c;
+    background: rgba(251, 113, 133, 0.13);
+    border-color: rgba(251, 113, 133, 0.4);
 }
 
 /* ---------- Main area ---------- */
@@ -211,16 +251,21 @@ button, input, textarea, select {
 .main-content {
     margin-left: 255px;
     width: calc(100% - 255px);
+    min-width: 0;
 }
 
 .topbar {
     min-height: 85px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(100, 116, 139, 0.18);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 35px;
-    background: rgba(11, 17, 32, 0.95);
+    background: rgba(10, 17, 31, 0.94);
+    backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
 }
 
 .topbar-left,
@@ -236,6 +281,8 @@ button, input, textarea, select {
 
 .topbar-left h2 {
     font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
 }
 
 .topbar-left p {
@@ -272,13 +319,15 @@ button, input, textarea, select {
 }
 
 .avatar {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     display: grid;
     place-items: center;
-    background: #1d4ed8;
+    background: linear-gradient(135deg, #6366f1, #0891b2);
     border-radius: 50%;
     font-weight: 700;
+    color: white;
+    box-shadow: 0 3px 12px rgba(99, 102, 241, 0.25);
 }
 
 .page-content {
@@ -298,30 +347,38 @@ button, input, textarea, select {
 
 .primary-button,
 .secondary-button {
-    border: none;
-    border-radius: 8px;
+    border-radius: 9px;
     padding: 12px 18px;
     display: inline-block;
     text-align: center;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
-    transition: 0.2s;
+    transition: all 0.22s ease;
 }
 
 .primary-button {
-    background: var(--primary);
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
     color: white;
+    border: 1px solid rgba(165, 180, 252, 0.2);
+    box-shadow: 0 5px 16px rgba(79, 70, 229, 0.2);
 }
 
 .primary-button:hover {
-    background: var(--primary-hover);
+    background: linear-gradient(135deg, #818cf8, #6366f1);
+    box-shadow: 0 7px 22px rgba(99, 102, 241, 0.3);
+    transform: translateY(-1px);
 }
 
 .secondary-button {
     background: var(--surface-light);
     border: 1px solid var(--border);
     color: var(--text);
+}
+
+.secondary-button:hover {
+    background: #223653;
+    border-color: #52698a;
 }
 
 .small-button {
@@ -338,25 +395,35 @@ button, input, textarea, select {
     display: block;
     font-size: 13px;
     margin-bottom: 9px;
-    color: #c4d2e5;
+    color: #cbd5e1;
+    font-weight: 600;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
     width: 100%;
-    background: #0d1728;
-    border: 1px solid var(--border);
+    background: #0c1628;
+    border: 1px solid #30415e;
     color: white;
-    border-radius: 8px;
-    padding: 13px;
+    border-radius: 9px;
+    padding: 13px 14px;
     outline: none;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #64748b;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-    border-color: var(--primary);
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.13);
+    background: #101e35;
 }
 
 .form-group textarea {
@@ -364,37 +431,46 @@ button, input, textarea, select {
     resize: vertical;
 }
 
+.form-group select option {
+    background: #111c30;
+    color: white;
+}
+
 .alert {
-    padding: 12px;
-    border-radius: 8px;
+    padding: 13px 15px;
+    border-radius: 9px;
     font-size: 13px;
     margin-bottom: 15px;
 }
 
 .alert-error {
-    background: #3a1d29;
-    color: #fca5a5;
-    border: 1px solid #7f1d1d;
+    background: rgba(251, 113, 133, 0.09);
+    color: #fda4af;
+    border: 1px solid rgba(251, 113, 133, 0.25);
 }
 
 /* ---------- Panels and tables ---------- */
 
 .panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    background: linear-gradient(145deg, #131f34, #101a2c);
+    border: 1px solid rgba(100, 116, 139, 0.20);
+    border-radius: var(--radius);
     padding: 22px;
+    box-shadow: var(--shadow);
+    min-width: 0;
 }
 
 .panel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     margin-bottom: 22px;
 }
 
 .panel-header h3 {
     font-size: 15px;
+    font-weight: 700;
 }
 
 .panel-header p {
@@ -404,12 +480,17 @@ button, input, textarea, select {
 }
 
 .panel-header a {
-    color: #60a5fa;
+    color: #a5b4fc;
     font-size: 12px;
+}
+
+.panel-header a:hover {
+    color: var(--cyan);
 }
 
 .table-container {
     overflow-x: auto;
+    border-radius: 9px;
 }
 
 table {
@@ -419,17 +500,34 @@ table {
 }
 
 th {
-    color: var(--muted);
+    color: #94a3b8;
     font-size: 11px;
+    font-weight: 700;
     text-align: left;
-    padding: 12px;
+    padding: 14px 12px;
     border-bottom: 1px solid var(--border);
+    background: rgba(30, 45, 69, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 td {
     padding: 15px 12px;
     font-size: 12px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(100, 116, 139, 0.13);
+    color: #dbe4f0;
+}
+
+tbody tr {
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+    background: rgba(99, 102, 241, 0.055);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .empty-state {
@@ -445,8 +543,9 @@ td {
     place-items: center;
     padding: 25px;
     background:
-        radial-gradient(circle at top right, #142e57 0%, transparent 40%),
-        var(--background);
+        radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.17), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.10), transparent 35%),
+        #080d1a;
 }
 
 .login-container {
@@ -462,6 +561,7 @@ td {
 .login-brand h1 {
     font-size: 27px;
     margin-top: 15px;
+    letter-spacing: -0.8px;
 }
 
 .login-brand p {
@@ -472,13 +572,15 @@ td {
 
 .login-card {
     padding: 32px;
-    border: 1px solid var(--border);
-    border-radius: 15px;
-    background: var(--surface);
+    border: 1px solid rgba(129, 140, 248, 0.2);
+    border-radius: 17px;
+    background: linear-gradient(145deg, #15223a, #101a2c);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
 }
 
 .login-card h2 {
     font-size: 22px;
+    font-weight: 700;
 }
 
 .login-description {
@@ -503,7 +605,7 @@ td {
     margin-top: 25px;
 }
 
-/* ---------- Short screens: tighter sidebar ---------- */
+/* ---------- Short screens ---------- */
 
 @media (max-height: 700px) {
     .brand { padding-bottom: 12px; }
@@ -511,4 +613,16 @@ td {
     .nav-link { padding: 8px 12px; margin-bottom: 2px; }
     .sidebar-section { margin-bottom: 12px; }
     .system-status { padding: 10px; margin-bottom: 10px; }
+}
+
+/* ---------- Accessibility ---------- */
+
+:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+}
+
+::selection {
+    background: rgba(99, 102, 241, 0.4);
+    color: white;
 }

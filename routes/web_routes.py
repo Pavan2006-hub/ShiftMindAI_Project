@@ -1,5 +1,4 @@
-
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, session
 from flask_login import login_required, current_user
 
 web_bp = Blueprint("web", __name__)
@@ -12,6 +11,19 @@ def login_page():
         return redirect(url_for("web.dashboard"))
 
     return render_template("login.html")
+
+
+# Email OTP verification page
+@web_bp.route("/verify-otp")
+def verify_otp_page():
+
+    if current_user.is_authenticated:
+        return redirect(url_for("web.dashboard"))
+
+    if not session.get("otp_challenge_id"):
+        return redirect(url_for("web.login_page"))
+
+    return render_template("verify_otp.html")
 
 
 @web_bp.route("/dashboard")

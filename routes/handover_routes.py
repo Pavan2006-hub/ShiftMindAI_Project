@@ -1,7 +1,7 @@
 import io
 from datetime import datetime, timedelta
-
-from flask import Blueprint, jsonify, request, send_file
+import inspect
+from flask import Blueprint, jsonify, request, send_file, current_app
 from flask_login import login_required, current_user
 
 from database.db import db
@@ -179,35 +179,124 @@ def get_handover(handover_id):
 @handover_bp.get("/<int:handover_id>/pdf")
 @login_required
 def handover_pdf(handover_id):
+
     h = db.session.get(Handover, handover_id)
+
     if not h:
         return fail("Handover not found.", 404)
 
-    from reportlab.lib.pagesizes import A4
-    from reportlab.lib.styles import getSampleStyleSheet
-    from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
-    from xml.sax.saxutils import escape
+    try:
+        from reportlab.lib.pagesizes import A4
+        from reportlab.lib.styles import getSampleStyleSheet
+        from reportlab.platypus import (
+            Paragraph,
+            SimpleDocTemplate,
+            Spacer
+        )
+        from xml.sax.saxutils import escape
 
-    styles = getSampleStyleSheet()
-    story = [
-        Paragraph("ShiftMind AI - Shift Handover #{}".format(h.id), styles["Title"]),
-        Paragraph("From: {} &nbsp; To: {}".format(
-            escape(h.outgoing_engineer.name if h.outgoing_engineer else "-"),
-            escape(h.incoming_engineer.name if h.incoming_engineer else "-")), styles["Normal"]),
-        Paragraph("Shift: {} to {} (UTC)".format(
-            h.shift_start.strftime("%Y-%m-%d %H:%M") if h.shift_start else "-",
-            h.shift_end.strftime("%Y-%m-%d %H:%M") if h.shift_end else "-"), styles["Normal"]),
-        Spacer(1, 12),
-        Paragraph("Summary", styles["Heading2"]),
-        Paragraph(escape(h.summary or "-"), styles["Normal"]),
-    ]
-    for field in LIST_FIELDS:
-        story.append(Paragraph(field.replace("_", " ").title(), styles["Heading2"]))
-        for entry in (getattr(h, field) or []) or ["None"]:
-            story.append(Paragraph("&bull; " + escape(str(entry)), styles["Normal"]))
+        styles = getSampleStyleSheet()
 
-    buffer = io.BytesIO()
-    SimpleDocTemplate(buffer, pagesize=A4).build(story)
-    buffer.seek(0)
-    return send_file(buffer, mimetype="application/pdf", as_attachment=True,
-                     download_name="handover-{}.pdf".format(h.id))
+        story = [
+            Paragraph(
+                "ShiftMind AI - Shift Handover #{}".format(h.id),
+                styles["Title"]
+            ),
+
+            Spacer(1, 12),
+
+            Paragraph(
+                "From: {} &nbsp; To: {}".format(
+                    escape(h.outgoing_engineer.name if h.outgoing_engineer else "-"),
+                    escape(h.incoming_engineer.name if h.incoming_engineer else "-")
+                ),
+                styles["Normal"]
+            ),
+
+            Spacer(1, 8),
+
+            Paragraph(
+                "Shift: {} to {} (UTC)".format(
+                    h.shift_start.strftime("%Y-%m-%d %H:%M")
+                    if h.shift_start else "-",
+                    h.shift_end.strftime("%Y-%m-%d %H:%M")
+                    if h.shift_end else "-"
+                ),
+                styles["Normal"]
+            ),
+
+            Spacer(1, 12),
+
+            Paragraph("Summary", styles["Heading2"]),
+
+            Paragraph(
+                escape(str(h.summary or "-")),
+                styles["Normal"]
+            ),
+
+            Spacer(1, 12)
+        ]
+
+        for field in LIST_FIELDS:
+
+            story.append(
+                Paragraph(
+                    field.replace("_", " ").title(),
+                    styles["Heading2"]
+                )
+            )
+
+            entries = getattr(h, field, None) or []
+
+            for entry in entries:
+                story.append(
+                    Paragraph(
+                        "&bull; " + escape(str(entry)),
+                        styles["Normal"]
+                    )
+                )
+
+            if not entries:
+                story.append(
+                    Paragraph("None", styles["Normal"])
+                )
+
+            story.append(Spacer(1, 8))
+
+        buffer = io.BytesIO()
+
+        document = SimpleDocTemplate(
+            buffer,
+            pagesize=A4,
+            title="Shift Handover Report"
+        )
+
+        document.build(story)
+
+        buffer.seek(0)
+
+        filename = "handover-{}.pdf".format(h.id)
+
+        download_options = {
+            "mimetype": "application/pdf",
+            "as_attachment": True
+        }
+
+        # Support both old and new Flask versions.
+        if "download_name" in inspect.signature(send_file).parameters:
+            download_options["download_name"] = filename
+        else:
+            download_options["attachment_filename"] = filename
+
+        return send_file(buffer, **download_options)
+
+    except Exception:
+        current_app.logger.exception(
+            "PDF generation failed for handover ID %s",
+            handover_id
+        )
+
+        return fail(
+            "Unable to generate the handover PDF. Check the Flask console for details.",
+            500
+        )

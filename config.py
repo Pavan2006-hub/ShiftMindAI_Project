@@ -76,7 +76,7 @@ class BaseConfig:
         os.getenv("HINDSIGHT_BASE_URL", "").strip()
         or "https://api.hindsight.vectorize.io"
     ).rstrip("/")
-    HINDSIGHT_API_KEY = os.getenv("HINDSIGHT_API_KEY", "").strip()
+    HINDSIGHT_API_KEY = os.getenv("HINDSIGHT_API_KEY", "").strip().strip('"').strip("'").replace("Bearer ", "").strip()
     HINDSIGHT_BANK_ID = os.getenv("HINDSIGHT_BANK_ID", "").strip() or "shiftmind"
 
 

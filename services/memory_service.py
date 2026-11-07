@@ -59,8 +59,16 @@ def _request(method: str, path: str, payload: Optional[Dict[str, Any]] = None,
         current_app.logger.warning("Hindsight request failed: %s", exc)
         raise MemoryUnavailable("Could not reach the Hindsight service.") from exc
 
-    if response.status_code in (401, 403):
-        raise MemoryUnavailable("Hindsight rejected the API key (check HINDSIGHT_API_KEY).")
+    if response.status_code == 401:
+        raise MemoryUnavailable(
+            "Hindsight rejected the key (401): it is invalid, revoked or expired. Create a new key.")
+
+    if response.status_code == 403:
+        raise MemoryUnavailable(
+            "Hindsight denied access (403): the key may be scoped to a different bank. Check HINDSIGHT_BANK_ID.")
+
+    if response.status_code == 402:
+        raise MemoryUnavailable("Hindsight account is out of credits (402).")
 
     if response.status_code >= 400:
         current_app.logger.warning(

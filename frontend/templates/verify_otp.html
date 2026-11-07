@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Email Verification | ShiftMind AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="login-body">
+
+<div class="login-container">
+
+    <div class="login-brand">
+        <div class="brand-icon large">S</div>
+        <h1>ShiftMind <span>AI</span></h1>
+        <p>Intelligent Incident Response & Shift Management</p>
+    </div>
+
+    <div class="login-card">
+
+        <h2>Verify Your Email</h2>
+
+        <p class="login-description">
+            Enter the six-digit verification code sent to your registered email.
+        </p>
+
+        <form id="otpForm">
+
+            <div class="form-group">
+                <label for="otp">Verification Code</label>
+
+                <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    placeholder="Enter 6-digit OTP"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    maxlength="6"
+                    pattern="[0-9]{6}"
+                    required
+                >
+            </div>
+
+            <div id="otpMessage"
+                 class="alert alert-error"
+                 hidden></div>
+
+            <button type="submit"
+                    class="primary-button"
+                    id="verifyButton">
+                Verify & Sign In
+            </button>
+
+        </form>
+
+        <div style="margin-top: 18px; text-align: center;">
+
+            <button type="button"
+                    id="resendButton"
+                    class="primary-button">
+                Resend OTP
+            </button>
+
+        </div>
+
+        <div class="login-footer">
+            Your verification code expires after 5 minutes.
+        </div>
+
+    </div>
+
+    <p class="login-copyright">
+        © 2026 ShiftMind AI. All rights reserved.
+    </p>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/verify_otp.js') }}"></script>
+
+</body>
+</html>
