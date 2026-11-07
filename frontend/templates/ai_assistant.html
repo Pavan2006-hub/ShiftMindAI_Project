@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}AI Assistant | ShiftMind AI{% endblock %}
+{% block page_heading %}AI Assistant{% endblock %}
+{% block page_subtitle %}Ask questions about incidents and troubleshooting{% endblock %}
+{% block content %}
+<div class="chat-layout">
+  <div class="panel"><button class="primary-button small-button" id="newChat" style="width:100%;margin-bottom:12px">+ New chat</button>
+    <div class="session-list" id="sessionList"></div></div>
+  <div class="panel chat-box">
+    <div id="chatMessage" class="alert" hidden></div>
+    <div class="chat-messages" id="chatMessages"><div class="bubble ai">Hi! Ask me about an outage, an error message, or what to try next.</div></div>
+    <form class="chat-input" id="chatForm"><textarea id="chatText" placeholder="Type your question..." maxlength="4000"></textarea>
+    <button class="primary-button" id="chatSend" type="submit">Send</button></form>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/ai_assistant.js') }}"></script>
+{% endblock %}

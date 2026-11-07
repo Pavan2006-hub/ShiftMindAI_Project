@@ -1,0 +1,141 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | ShiftMind AI{% endblock %}
+{% block page_heading %}Dashboard{% endblock %}
+{% block page_subtitle %}Your operational overview at a glance{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="welcome-section">
+    <div>
+        <h1>Operations Overview</h1>
+        <p>Monitor incidents, analyze patterns, and maintain operational continuity.</p>
+    </div>
+
+    <a href="/incidents/create" class="primary-button small-button">
+        + Create Incident
+    </a>
+</div>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Total Incidents</span>
+            <span class="stat-icon blue">◈</span>
+        </div>
+        <h2 id="totalIncidents">--</h2>
+        <small>All recorded incidents</small>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Active Incidents</span>
+            <span class="stat-icon orange">◉</span>
+        </div>
+        <h2 id="activeIncidents">--</h2>
+        <small>Currently unresolved</small>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Resolved Incidents</span>
+            <span class="stat-icon green">✓</span>
+        </div>
+        <h2 id="resolvedIncidents">--</h2>
+        <small>Successfully resolved</small>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span>Critical Incidents</span>
+            <span class="stat-icon red">!</span>
+        </div>
+        <h2 id="criticalIncidents">--</h2>
+        <small>Critical severity</small>
+    </div>
+
+</div>
+
+<div class="dashboard-grid">
+
+    <div class="panel incidents-panel">
+        <div class="panel-header">
+            <div>
+                <h3>Recent Incidents</h3>
+                <p>Latest operational events</p>
+            </div>
+
+            <a href="/incidents">View all →</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Incident</th>
+                        <th>Service</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="recentIncidents">
+                    <tr>
+                        <td colspan="4" class="empty-state">Loading incidents...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel ai-insights-panel">
+        <div class="panel-header">
+            <div>
+                <h3>AI Intelligence</h3>
+                <p>Operational knowledge</p>
+            </div>
+            <span class="ai-badge">AI</span>
+        </div>
+
+        <div class="insight-item">
+            <span class="insight-icon">✧</span>
+            <div>
+                <strong>Historical Learning</strong>
+                <p>ShiftMind AI uses past incident experiences to support future troubleshooting.</p>
+            </div>
+        </div>
+
+        <div class="insight-item">
+            <span class="insight-icon">◫</span>
+            <div>
+                <strong>Persistent Memory</strong>
+                <p>Hindsight memory integration will provide context from previous incidents.</p>
+            </div>
+        </div>
+
+        <div class="insight-item">
+            <span class="insight-icon">⇄</span>
+            <div>
+                <strong>Shift Continuity</strong>
+                <p>Preserve operational knowledge between outgoing and incoming engineers.</p>
+            </div>
+        </div>
+
+        <a href="/ai-assistant" class="secondary-button">
+            Open AI Assistant →
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

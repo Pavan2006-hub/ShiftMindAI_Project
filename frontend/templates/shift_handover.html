@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Shift Handover | ShiftMind AI{% endblock %}
+{% block page_heading %}Shift Handover{% endblock %}
+{% block page_subtitle %}Generate and review shift handover reports{% endblock %}
+{% block content %}
+<div class="panel" style="margin-bottom:20px"><div class="panel-header"><h3>New handover</h3></div>
+  <div class="form-grid"><div class="form-group"><label>Incoming engineer</label><select id="incoming"><option value="">Not specified</option></select></div>
+  <div class="form-group"><label>Shift length (hours)</label><input type="number" id="hours" min="1" max="72" value="8"></div>
+  <div class="form-group full"><label>Extra notes (optional)</label><textarea id="notes" style="min-height:70px"></textarea></div></div>
+  <div id="hoMessage" class="alert" hidden></div>
+  <button class="primary-button" id="generate">Generate handover</button></div>
+<div id="hoView"></div>
+<div class="panel"><div class="panel-header"><h3>Previous handovers</h3></div>
+  <div class="table-container"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Created</th><th></th></tr></thead>
+  <tbody id="hoRows"><tr><td colspan="5" class="empty-state">Loading...</td></tr></tbody></table></div></div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/shift_handover.js') }}"></script>
+{% endblock %}

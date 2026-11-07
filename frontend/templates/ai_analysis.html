@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}AI Analysis | ShiftMind AI{% endblock %}
+{% block page_heading %}AI Analysis{% endblock %}
+{% block page_subtitle %}Get unverified hypotheses and next steps for an incident{% endblock %}
+{% block content %}
+<div class="panel" style="margin-bottom:20px">
+  <div class="toolbar" style="margin:0"><select id="incidentSelect" style="flex:1"><option value="">Select an incident...</option></select>
+  <button class="primary-button" id="analyzeBtn">✧ Analyze</button></div>
+  <p class="muted" style="margin-top:10px">AI suggestions are unverified hypotheses. Confirm them before acting or recording a root cause.</p>
+</div>
+<div id="aiMessage" class="alert" hidden></div>
+<div id="analysisOutput"></div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/ai_analysis.js') }}"></script>
+{% endblock %}

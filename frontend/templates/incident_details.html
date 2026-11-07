@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Incident Details | ShiftMind AI{% endblock %}
+{% block page_heading %}Incident Details{% endblock %}
+{% block page_subtitle %}Investigate, record actions and resolve{% endblock %}
+{% block content %}
+<div id="pageMessage" class="alert" hidden></div>
+<div class="detail-grid" data-incident-id="{{ incident_id }}">
+  <div>
+    <div class="panel"><div class="panel-header"><div><h3 id="dTitle">Loading...</h3><p id="dService"></p></div><div id="dBadges"></div></div>
+      <dl class="kv" id="dFields"></dl></div>
+    <div class="panel"><div class="panel-header"><h3>Troubleshooting actions</h3></div>
+      <ul class="timeline" id="actionList"></ul>
+      <form id="actionForm" style="margin-top:14px">
+        <div class="form-group"><label>What did you try?</label><textarea id="actionDesc" style="min-height:70px" required></textarea></div>
+        <div class="form-grid"><div class="form-group"><label>Outcome</label><select id="actionOutcome"><option>attempted</option><option>successful</option><option>failed</option></select></div>
+        <div class="form-group"><label>Actual result</label><input id="actionResult"></div></div>
+        <button class="primary-button small-button" type="submit">Record action</button></form></div>
+    <div class="panel"><div class="panel-header"><h3>Activity log</h3></div><ul class="timeline" id="logList"></ul></div>
+  </div>
+  <div>
+    <div class="panel"><div class="panel-header"><h3>Manage</h3></div>
+      <div class="form-group"><label>Status</label><select id="statusSelect"><option>open</option><option>investigating</option><option>monitoring</option><option>resolved</option><option>closed</option></select></div>
+      <div class="form-group"><label>Assigned engineer</label><select id="assignSelect"><option value="">Select engineer</option></select></div>
+      <div class="row-actions"><button class="secondary-button small-button" id="saveStatus">Update status</button>
+      <button class="secondary-button small-button" id="saveAssign">Assign</button></div></div>
+    <div class="panel"><div class="panel-header"><h3>Resolve</h3></div>
+      <div class="form-group"><label>Resolution summary *</label><textarea id="resSummary" style="min-height:80px"></textarea></div>
+      <div class="form-group"><label>Verified root cause (only if confirmed)</label><textarea id="resCause" style="min-height:80px"></textarea></div>
+      <button class="primary-button small-button" id="resolveBtn">Resolve incident</button></div>
+    <div class="panel"><div class="panel-header"><h3>AI help</h3></div>
+      <a class="secondary-button small-button" id="analyzeLink" href="#">✧ Analyze with AI</a>
+      <div class="row-actions" id="adminZone" hidden><button class="danger-button" id="deleteBtn">Delete incident</button></div></div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/incident_details.js') }}"></script>
+{% endblock %}

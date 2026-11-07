@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}ShiftMind AI{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">S</div>
+            <div class="brand-text">
+                <h2>ShiftMind<span> AI</span></h2>
+                <small>Intelligent SRE Platform</small>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="nav-heading">WORKSPACE</p>
+
+            <a href="/dashboard" class="nav-link">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="/incidents" class="nav-link">
+                <span>◈</span> Incidents
+            </a>
+
+            <a href="/incidents/create" class="nav-link">
+                <span>＋</span> Create Incident
+            </a>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="nav-heading">INTELLIGENCE</p>
+
+            <a href="/ai-analysis" class="nav-link">
+                <span>✧</span> AI Analysis
+            </a>
+
+            <a href="/ai-assistant" class="nav-link">
+                <span>◉</span> AI Assistant
+            </a>
+
+            <a href="/memory-explorer" class="nav-link">
+                <span>◫</span> Memory Explorer
+            </a>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="nav-heading">OPERATIONS</p>
+
+            <a href="/shift-handover" class="nav-link">
+                <span>⇄</span> Shift Handover
+            </a>
+
+            <a href="/settings" class="nav-link">
+                <span>⚙</span> Settings
+            </a>
+        </div>
+
+        <div class="sidebar-bottom">
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>System Online</strong>
+                    <small>Services operational</small>
+                </div>
+            </div>
+
+            <button class="logout-button" id="logoutButton">
+                ⇥ Logout
+            </button>
+        </div>
+
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="topbar-left">
+                <button id="menuToggle" class="menu-toggle">☰</button>
+                <div>
+                    <h2>{% block page_heading %}Dashboard{% endblock %}</h2>
+                    <p>{% block page_subtitle %}Monitor and manage your operations{% endblock %}</p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="topbar-status">
+                    <span class="status-dot"></span>
+                    Operational
+                </div>
+
+                <div class="user-profile">
+                    <div class="avatar">
+                        {{ current_user.name[0]|upper if current_user.is_authenticated else 'U' }}
+                    </div>
+                    <div>
+                        <strong>{{ current_user.name if current_user.is_authenticated else 'User' }}</strong>
+                        <small>{{ current_user.role if current_user.is_authenticated else '' }}</small>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="page-content">
+            {% block content %}{% endblock %}
+        </section>
+
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

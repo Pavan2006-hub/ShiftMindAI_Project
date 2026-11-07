@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Memory Explorer | ShiftMind AI{% endblock %}
+{% block page_heading %}Memory Explorer{% endblock %}
+{% block page_subtitle %}Search and query the Hindsight long-term memory{% endblock %}
+{% block content %}
+<div id="memStatus" class="alert" hidden></div>
+<div class="panel" style="margin-bottom:20px"><div class="panel-header"><h3>Search memory</h3></div>
+  <div class="toolbar" style="margin:0"><input type="search" id="memQuery" placeholder="e.g. payment API timeout">
+  <button class="primary-button" id="searchBtn">Search</button><button class="secondary-button" id="reflectBtn">Ask (reflect)</button></div></div>
+<div id="memOutput"></div>
+<div class="panel"><div class="panel-header"><h3>Add a note to memory</h3></div>
+  <div class="form-group"><textarea id="noteText" style="min-height:80px" placeholder="A lesson learned, a runbook tip..."></textarea></div>
+  <button class="secondary-button" id="noteBtn">Save note</button></div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/memory_explorer.js') }}"></script>
+{% endblock %}

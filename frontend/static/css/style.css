@@ -1,0 +1,514 @@
+:root {
+    --background: #0b1120;
+    --sidebar: #101a2c;
+    --surface: #111c30;
+    --surface-light: #18263d;
+    --border: #24344d;
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --cyan: #06b6d4;
+    --text: #e5edf8;
+    --muted: #91a2bb;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f59e0b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button, input, textarea, select {
+    font: inherit;
+}
+
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+    width: 255px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 16px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 100vh;
+    overflow: auto;          /* only .sidebar-nav scrolls */
+    z-index: 100;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px 20px;
+    flex-shrink: 0;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 22px;
+    color: white;
+}
+
+.brand-icon.large {
+    width: 58px;
+    height: 58px;
+    font-size: 28px;
+    margin: auto;
+}
+
+.brand-text h2 {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.brand-text h2 span,
+.login-brand h1 span {
+    color: var(--cyan);
+}
+
+.brand-text small {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+/* Scrollable middle area (wrap the nav sections in <nav class="sidebar-nav">) */
+.sidebar-nav {
+    flex: 1;
+    min-height: 0;             /* required so the flex child can shrink and scroll */
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+.sidebar-section {
+    margin-bottom: 18px;
+}
+
+.nav-heading {
+    color: #657891;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 0 12px 12px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 10px 12px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.nav-link span {
+    font-size: 18px;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: #1d3150;
+    color: #60a5fa;
+}
+
+/* Status box + logout, always visible at the bottom */
+.sidebar-bottom {
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.system-status strong,
+.system-status small {
+    display: block;
+    font-size: 11px;
+}
+
+.system-status small {
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.logout-button {
+    width: 100%;
+    background: transparent;
+    color: #f87171;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background: #3b202c;
+}
+
+/* ---------- Main area ---------- */
+
+.main-content {
+    margin-left: 255px;
+    width: calc(100% - 255px);
+}
+
+.topbar {
+    min-height: 85px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 35px;
+    background: rgba(11, 17, 32, 0.95);
+}
+
+.topbar-left,
+.topbar-right,
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.topbar-left {
+    gap: 15px;
+}
+
+.topbar-left h2 {
+    font-size: 18px;
+}
+
+.topbar-left p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.topbar-right {
+    gap: 25px;
+}
+
+.topbar-status {
+    color: var(--green);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-profile {
+    gap: 10px;
+}
+
+.user-profile strong,
+.user-profile small {
+    display: block;
+    font-size: 12px;
+}
+
+.user-profile small {
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    background: #1d4ed8;
+    border-radius: 50%;
+    font-weight: 700;
+}
+
+.page-content {
+    padding: 30px 35px;
+}
+
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ---------- Buttons ---------- */
+
+.primary-button,
+.secondary-button {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 18px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.primary-button {
+    background: var(--primary);
+    color: white;
+}
+
+.primary-button:hover {
+    background: var(--primary-hover);
+}
+
+.secondary-button {
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.small-button {
+    padding: 10px 15px;
+}
+
+/* ---------- Forms ---------- */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 9px;
+    color: #c4d2e5;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    background: #0d1728;
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 8px;
+    padding: 13px;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.alert {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.alert-error {
+    background: #3a1d29;
+    color: #fca5a5;
+    border: 1px solid #7f1d1d;
+}
+
+/* ---------- Panels and tables ---------- */
+
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.panel-header h3 {
+    font-size: 15px;
+}
+
+.panel-header p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.panel-header a {
+    color: #60a5fa;
+    font-size: 12px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+th {
+    color: var(--muted);
+    font-size: 11px;
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    padding: 15px 12px;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.empty-state {
+    color: var(--muted);
+    text-align: center;
+    padding: 25px;
+}
+
+/* ---------- Login page ---------- */
+
+.login-body {
+    display: grid;
+    place-items: center;
+    padding: 25px;
+    background:
+        radial-gradient(circle at top right, #142e57 0%, transparent 40%),
+        var(--background);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 430px;
+}
+
+.login-brand {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-brand h1 {
+    font-size: 27px;
+    margin-top: 15px;
+}
+
+.login-brand p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.login-card {
+    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--surface);
+}
+
+.login-card h2 {
+    font-size: 22px;
+}
+
+.login-description {
+    color: var(--muted);
+    font-size: 12px;
+    margin: 8px 0 28px;
+}
+
+.login-card .primary-button {
+    width: 100%;
+}
+
+.login-footer,
+.login-copyright {
+    color: var(--muted);
+    text-align: center;
+    font-size: 11px;
+    margin-top: 22px;
+}
+
+.login-copyright {
+    margin-top: 25px;
+}
+
+/* ---------- Short screens: tighter sidebar ---------- */
+
+@media (max-height: 700px) {
+    .brand { padding-bottom: 12px; }
+    .nav-heading { padding-bottom: 6px; }
+    .nav-link { padding: 8px 12px; margin-bottom: 2px; }
+    .sidebar-section { margin-bottom: 12px; }
+    .system-status { padding: 10px; margin-bottom: 10px; }
+}

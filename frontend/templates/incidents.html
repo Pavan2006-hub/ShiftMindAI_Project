@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Incidents | ShiftMind AI{% endblock %}
+{% block page_heading %}Incidents{% endblock %}
+{% block page_subtitle %}Search, filter and manage incidents{% endblock %}
+{% block content %}
+<div class="toolbar">
+  <input type="search" id="search" placeholder="Search title, description or service...">
+  <select id="status"><option value="">All statuses</option><option>open</option><option>investigating</option><option>monitoring</option><option>resolved</option><option>closed</option></select>
+  <select id="severity"><option value="">All severities</option><option>low</option><option>medium</option><option>high</option><option>critical</option></select>
+  <a href="/incidents/create" class="primary-button small-button">+ Create Incident</a>
+</div>
+<div class="panel">
+  <div class="table-container"><table>
+    <thead><tr><th>#</th><th>Incident</th><th>Service</th><th>Severity</th><th>Priority</th><th>Status</th><th>Created</th></tr></thead>
+    <tbody id="incidentRows"><tr><td colspan="7" class="empty-state">Loading incidents...</td></tr></tbody>
+  </table></div>
+  <div class="pager"><button class="secondary-button small-button" id="prev">← Prev</button><span id="pageInfo"></span><button class="secondary-button small-button" id="next">Next →</button></div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/incidents.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Create Incident | ShiftMind AI{% endblock %}
+{% block page_heading %}Create Incident{% endblock %}
+{% block page_subtitle %}Record a new operational incident{% endblock %}
+{% block content %}
+<div class="panel" style="max-width:860px">
+  <form id="incidentForm">
+    <div class="form-grid">
+      <div class="form-group full"><label for="title">Title *</label><input id="title" maxlength="200" required></div>
+      <div class="form-group"><label for="service_name">Service *</label><input id="service_name" maxlength="120" required></div>
+      <div class="form-group"><label for="assigned">Assign engineer</label><select id="assigned"><option value="">Unassigned</option></select></div>
+      <div class="form-group"><label for="severity">Severity</label><select id="severity"><option>low</option><option selected>medium</option><option>high</option><option>critical</option></select></div>
+      <div class="form-group"><label for="priority">Priority</label><select id="priority"><option>low</option><option selected>medium</option><option>high</option><option>critical</option></select></div>
+      <div class="form-group full"><label for="description">Description *</label><textarea id="description" required></textarea></div>
+      <div class="form-group full"><label for="error_message">Error message</label><textarea id="error_message" style="min-height:70px"></textarea></div>
+      <div class="form-group full"><label for="system_logs">System logs</label><textarea id="system_logs"></textarea></div>
+    </div>
+    <div id="formMessage" class="alert" hidden></div>
+    <button class="primary-button" id="submitBtn" type="submit">Create Incident</button>
+  </form>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/create_incident.js') }}"></script>
+{% endblock %}

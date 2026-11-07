@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | ShiftMind AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="login-body">
+
+<div class="login-container">
+
+    <div class="login-brand">
+        <div class="brand-icon large">S</div>
+        <h1>ShiftMind <span>AI</span></h1>
+        <p>Intelligent Incident Response & Shift Management</p>
+    </div>
+
+    <div class="login-card">
+
+        <h2>Welcome Back</h2>
+        <p class="login-description">Sign in to access your operations workspace.</p>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
+
+            <div id="loginError" class="alert alert-error" hidden></div>
+
+            <button type="submit" class="primary-button" id="loginButton">
+                Sign In
+            </button>
+
+        </form>
+
+        <div class="login-footer">
+            Protected access for authorized engineers.
+        </div>
+
+    </div>
+
+    <p class="login-copyright">© 2026 ShiftMind AI. All rights reserved.</p>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
+</body>
+</html>
