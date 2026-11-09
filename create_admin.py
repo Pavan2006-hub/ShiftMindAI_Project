@@ -1,3 +1,4 @@
+import os
 from app import create_app
 from database.db import db
 from extensions import bcrypt
@@ -10,12 +11,12 @@ with app.app_context():
 
     print("\nSHIFT MIND AI - ADMIN ACCOUNT SETUP\n")
 
-    name = input("Admin name: ").strip()
-    email = input("Admin Gmail: ").strip().lower()
+    name = (os.getenv("ADMIN_NAME") or input("Admin name: ")).strip()
+    email = (os.getenv("ADMIN_EMAIL") or input("Admin Gmail: ")).strip().lower()
 
     # Password will be visible while typing
-    password = input("Admin login password: ")
-    confirm_password = input("Confirm password: ")
+    password = os.getenv("ADMIN_PASSWORD") or input("Admin login password: ")
+    confirm_password = os.getenv("ADMIN_PASSWORD") or input("Confirm password: ")
 
     if not name or not email:
         print("Name and email are required.")

@@ -1,5 +1,10 @@
+from datetime import datetime
+
 from flask import Blueprint, render_template, redirect, url_for, session
 from flask_login import login_required, current_user
+
+from database.db import db
+from models.email_otp import EmailOTP
 
 web_bp = Blueprint("web", __name__)
 
@@ -20,7 +25,24 @@ def verify_otp_page():
     if current_user.is_authenticated:
         return redirect(url_for("web.dashboard"))
 
-    if not session.get("otp_challenge_id"):
+    challenge_id = session.get("otp_challenge_id")
+
+    if not challenge_id:
+        return redirect(url_for("web.login_page"))
+
+    challenge = EmailOTP.query.filter_by(
+        challenge_id=challenge_id,
+        used_at=None
+    ).first()
+
+    if not challenge:
+        session.pop("otp_challenge_id", None)
+        return redirect(url_for("web.login_page"))
+
+    if challenge.expires_at <= datetime.utcnow():
+        db.session.delete(challenge)
+        db.session.commit()
+        session.pop("otp_challenge_id", None)
         return redirect(url_for("web.login_page"))
 
     return render_template("verify_otp.html")

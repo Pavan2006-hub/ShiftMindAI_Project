@@ -170,3 +170,38 @@ def test_csrf_is_enforced_when_enabled():
     r = c.post("/api/auth/login", json={"email": "a@b.co", "password": "x"},
                headers={"X-CSRFToken": token})
     assert r.status_code == 401
+
+
+def test_email_otp_full_workflow(app, client, monkeypatch):
+    monkeypatch.setitem(app.config, "OTP_ENABLED_IN_TESTING", True)
+    captured = []
+    import routes.auth_routes as auth
+    monkeypatch.setattr(auth, "send_otp_email", lambda email, name, code: captured.append(code))
+
+    # 1. Login with correct password generates an OTP challenge
+    r = client.post("/api/auth/login", json={"email": "admin@test.io", "password": "password123"})
+    assert r.status_code == 200
+    assert r.get_json()["otp_required"] is True
+    assert len(captured) == 1
+    otp = captured[0]
+
+    # Client is NOT authenticated before OTP
+    assert client.get("/api/auth/me").status_code == 401
+
+    # 2. Invalid OTP format fails
+    r_bad = client.post("/api/auth/verify-otp", json={"otp": "123"})
+    assert r_bad.status_code == 400
+
+    # 3. Incorrect OTP fails
+    r_wrong = client.post("/api/auth/verify-otp", json={"otp": "999999" if otp != "999999" else "000000"})
+    assert r_wrong.status_code == 401
+
+    # 4. Correct OTP verifies and authenticates
+    r_ok = client.post("/api/auth/verify-otp", json={"otp": otp})
+    assert r_ok.status_code == 200
+    assert r_ok.get_json()["redirect"] == "/dashboard"
+
+    # 5. User is now authenticated
+    me = client.get("/api/auth/me")
+    assert me.status_code == 200
+    assert me.get_json()["user"]["email"] == "admin@test.io"

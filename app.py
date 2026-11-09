@@ -1,4 +1,3 @@
-
 import os
 from pathlib import Path
 from datetime import datetime
@@ -217,38 +216,6 @@ def create_app(config_object=None):
     app.register_blueprint(web_bp)
 
     # -------------------------------------------------
-    # OTP VERIFICATION PAGE
-    # -------------------------------------------------
-
-    @app.get("/verify-otp")
-    def verify_otp_page():
-
-        challenge_id = session.get("otp_challenge_id")
-
-        if not challenge_id:
-            return redirect(url_for("web.login_page"))
-
-        challenge = EmailOTP.query.filter_by(
-            challenge_id=challenge_id,
-            used_at=None
-        ).first()
-
-        if not challenge:
-            session.pop("otp_challenge_id", None)
-            return redirect(url_for("web.login_page"))
-
-        if challenge.expires_at <= datetime.utcnow():
-
-            db.session.delete(challenge)
-            db.session.commit()
-
-            session.pop("otp_challenge_id", None)
-
-            return redirect(url_for("web.login_page"))
-
-        return render_template("verify_otp.html")
-
-    # -------------------------------------------------
     # HOME
     # -------------------------------------------------
 
@@ -359,6 +326,11 @@ def create_app(config_object=None):
             "message": "An internal server error occurred",
             "error": "Please try again later"
         }), 500
+
+    # Handle reverse proxy headers in production (Render, AWS, etc.)
+    if not app.debug and not app.testing:
+        from werkzeug.middleware.proxy_fix import ProxyFix
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
     return app
 

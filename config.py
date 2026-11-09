@@ -28,6 +28,10 @@ def _resolve_database_url():
     if not url:
         return "sqlite:///" + default_path
 
+    # Fix Render/Heroku postgres:// URLs for SQLAlchemy
+    if url.startswith("postgres://"):
+        url = url.replace("postgres://", "postgresql://", 1)
+
     if url.startswith("sqlite:///") and not url.startswith("sqlite:////"):
         relative = url[len("sqlite:///"):]
 
