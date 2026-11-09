@@ -219,10 +219,10 @@ def create_app(config_object=None):
     # HOME
     # -------------------------------------------------
 
-    @app.route("/", methods=["GET"])
-    def home():
+   @app.route("/", methods=["GET"])
+def home():
 
-        return redirect(url_for("web.dashboard"))
+    return redirect(url_for("web.login_page"))
 
     # -------------------------------------------------
     # HEALTH ENDPOINTS

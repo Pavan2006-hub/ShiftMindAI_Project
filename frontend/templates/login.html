@@ -7,67 +7,275 @@
 
     <title>Login | ShiftMind AI</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* Password field wrapper */
+        .password-input-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-input-wrap input {
+            width: 100%;
+            padding-right: 50px !important;
+        }
+
+        /* Eye button */
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+            border: none;
+            border-radius: 7px;
+            background: transparent;
+
+            color: #94a3b8;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .password-toggle:hover {
+            background: rgba(148, 163, 184, 0.12);
+            color: #ffffff;
+        }
+
+        .password-toggle svg {
+            width: 20px;
+            height: 20px;
+
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .password-toggle .eye-closed {
+            display: none;
+        }
+
+        .password-toggle[aria-pressed="true"] .eye-open {
+            display: none;
+        }
+
+        .password-toggle[aria-pressed="true"] .eye-closed {
+            display: block;
+        }
+
+        .password-toggle:focus-visible {
+            outline: 2px solid #818cf8;
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 
 <body class="login-body">
 
 <div class="login-container">
 
+    <!-- BRAND SECTION -->
     <div class="login-brand">
+
         <div class="brand-icon large">S</div>
+
         <h1>ShiftMind <span>AI</span></h1>
-        <p>Intelligent Incident Response & Shift Management</p>
+
+        <p>
+            Intelligent Incident Response & Shift Management
+        </p>
+
     </div>
 
+
+    <!-- LOGIN CARD -->
     <div class="login-card">
 
         <h2>Welcome Back</h2>
-        <p class="login-description">Sign in to access your operations workspace.</p>
 
+        <p class="login-description">
+            Sign in to access your operations workspace.
+        </p>
+
+
+        <!-- LOGIN FORM -->
         <form id="loginForm">
 
+            <!-- EMAIL FIELD -->
             <div class="form-group">
-                <label for="email">Email Address</label>
+
+                <label for="email">
+                    Email Address
+                </label>
+
                 <input
                     type="email"
                     id="email"
                     name="email"
                     placeholder="Enter your email"
+                    autocomplete="username"
                     required
                 >
+
             </div>
 
+
+            <!-- PASSWORD FIELD -->
             <div class="form-group">
-                <label for="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    required
-                >
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="password-input-wrap">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <!-- SHOW / HIDE PASSWORD BUTTON -->
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        id="passwordToggle"
+                        aria-label="Show password"
+                        aria-pressed="false"
+                    >
+
+                        <!-- OPEN EYE -->
+                        <svg
+                            class="eye-open"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"
+                            ></path>
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="3"
+                            ></circle>
+                        </svg>
+
+
+                        <!-- CLOSED EYE -->
+                        <svg
+                            class="eye-closed"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path d="M3 3L21 21"></path>
+
+                            <path
+                                d="M10.6 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.5 0-2.8-.4-4-.9"
+                            ></path>
+
+                            <path
+                                d="M2 12s1.5-3.9 4.2-5.8"
+                            ></path>
+                        </svg>
+
+                    </button>
+
+                </div>
+
             </div>
 
-            <div id="loginError" class="alert alert-error" hidden></div>
 
-            <button type="submit" class="primary-button" id="loginButton">
+            <!-- LOGIN ERROR MESSAGE -->
+            <div
+                id="loginError"
+                class="alert alert-error"
+                hidden
+            ></div>
+
+
+            <!-- SIGN IN BUTTON -->
+            <button
+                type="submit"
+                class="primary-button"
+                id="loginButton"
+            >
                 Sign In
             </button>
 
         </form>
 
+
+        <!-- FOOTER -->
         <div class="login-footer">
             Protected access for authorized engineers.
         </div>
 
     </div>
 
-    <p class="login-copyright">© 2026 ShiftMind AI. All rights reserved.</p>
+
+    <!-- COPYRIGHT -->
+    <p class="login-copyright">
+        © 2026 ShiftMind AI. All rights reserved.
+    </p>
 
 </div>
 
+
+<!-- EXISTING LOGIN FUNCTIONALITY -->
 <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
+
+<!-- PASSWORD VISIBILITY FUNCTIONALITY -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const passwordInput =
+            document.getElementById("password");
+
+        const toggleButton =
+            document.getElementById("passwordToggle");
+
+        if (!passwordInput || !toggleButton) return;
+
+        toggleButton.addEventListener("click", function () {
+
+            const isHidden =
+                passwordInput.type === "password";
+
+            passwordInput.type =
+                isHidden ? "text" : "password";
+
+            toggleButton.setAttribute(
+                "aria-pressed",
+                String(isHidden)
+            );
+
+            toggleButton.setAttribute(
+                "aria-label",
+                isHidden ? "Hide password" : "Show password"
+            );
+
+            passwordInput.focus();
+
+        });
+
+    });
+</script>
 
 </body>
 </html>
