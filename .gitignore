@@ -9,7 +9,6 @@ htmlcov/
 instance/*
 !instance/.gitkeep
 *.sqlite
-*.db
 *.log
 .mypy_cache/
 .ruff_cache/
